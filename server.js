@@ -1,7 +1,39 @@
-const express = require('');
-const {create,update,remove,findall} = require('./repositories/alunosRepository');
+const express = require('express');
+const {create,update,remove,findAll} = require('./repositories/alunosRepository');
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+
+app.post('/alunos', (req, res) => {
+  const { nome, email, nome_curso } = req.body;
+  const aluno = create({ nome, email, nome_curso });
+  res.status(201).json(aluno);
+});
+
+app.put('/alunos/:id', (req, res) => {
+  const { id } = req.params;
+  const { nome, email, nome_curso } = req.body;
+  const aluno = update(id, { nome, email, nome_curso });
+  res.json(aluno);
+});
+
+app.delete('/alunos/:id', (req, res) => {
+  const { id } = req.params;
+  const success = remove(id);
+  if (success) {
+    res.sendStatus(204);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+app.get('/alunos', (req, res) => {
+  const alunos = findAll();
+  res.json(alunos);
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

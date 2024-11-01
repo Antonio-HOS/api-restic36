@@ -42,7 +42,7 @@ function findAll() {
   return alunos;
 }
 
-module.create = {
+module.exports = {
   create,
   update,
   remove,
